@@ -1,0 +1,38 @@
+.Task {
+  background: rgb(44, 31, 47);
+  background: linear-gradient(
+    250deg,
+    rgba(44, 31, 47, 1) 0%,
+    rgba(60, 14, 106, 1) 35%
+  );
+  color: whitesmoke;
+}
+
+h5 .Task {
+  font-weight: bold;
+}
+
+.Action-btn {
+  background-color: #5a189a;
+  color: whitesmoke;
+}
+
+.Action-btn:hover {
+  background-color: #7d26d3;
+  color: whitesmoke;
+}
+
+.navbar-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: whitesmoke;
+}
+
+.navbar-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: whitesmoke;
+  margin-left: 2%;
+}
