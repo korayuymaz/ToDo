@@ -1,27 +1,58 @@
-import { TaskList } from './tasks';
+import { TaskList, CompletedTaskList } from './tasks';
 import TaskInput from './tasks';
 import React from 'react';
 import '../styles/page.css'
 
 function Header(props){
-    return (
-        <div className="row no-gutters mt-3 justify-content-start">
-            <button className='navbar-icon col-2 col-sm-4' onClick={props.tasks}>Logo</button>
-            <button className='navbar-button col-1' onClick={props.tasks}>Home</button>
-            <button className='navbar-button col-1' onClick={props.create}>Create Task</button>
-            <button className='navbar-button col-1' onClick={props.tasks}>Statistics</button>
-        </div>
-    );
+    if(props.state === 'main'){
+        return (
+            <div className="row no-gutters mt-3 justify-content-start">
+                <button className='navbar-icon col-2 col-sm-4' onClick={props.tasks}>Logo</button>
+                <button className='navbar-button col-1 selected-button' onClick={props.tasks}>Home</button>
+                <button className='navbar-button col-1' onClick={props.create}>Create Task</button>
+                <button className='navbar-button col-1' onClick={props.completed}>Completed</button>
+            </div>
+        );
+    } else if(props.state === 'completed'){
+        return (
+            <div className="row no-gutters mt-3 justify-content-start">
+                <button className='navbar-icon col-2 col-sm-4' onClick={props.tasks}>Logo</button>
+                <button className='navbar-button col-1' onClick={props.tasks}>Home</button>
+                <button className='navbar-button col-1' onClick={props.create}>Create Task</button>
+                <button className='navbar-button col-1 selected-button' onClick={props.completed}>Completed</button>
+            </div>
+        );
+    } else if(props.state === 'create'){
+        return (
+            <div className="row no-gutters mt-3 justify-content-start">
+                <button className='navbar-icon col-2 col-sm-4' onClick={props.tasks}>Logo</button>
+                <button className='navbar-button col-1' onClick={props.tasks}>Home</button>
+                <button className='navbar-button col-1 selected-button' onClick={props.create}>Create Task</button>
+                <button className='navbar-button col-1' onClick={props.completed}>Completed</button>
+            </div>
+        );
+    } else {
+        return (
+            <div className="row no-gutters mt-3 justify-content-start">
+                <button className='navbar-icon col-2 col-sm-4' onClick={props.tasks}>Logo</button>
+                <button className='navbar-button col-1' onClick={props.tasks}>Home</button>
+                <button className='navbar-button col-1' onClick={props.create}>Create Task</button>
+                <button className='navbar-button col-1' onClick={props.completed}>Completed</button>
+            </div>
+        );
+    }
+    
 }
 
 class TaskPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            state : 'main'
+            state : 'main',
+            login : true
         };
         this.handleCreateClick = this.handleCreateClick.bind(this);
-        this.handleStatisticsClick = this.handleStatisticsClick.bind(this);
+        this.handleCompletedClick = this.handleCompletedClick.bind(this);
         this.handleTasksClick = this.handleTasksClick.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
     }
@@ -30,8 +61,8 @@ class TaskPage extends React.Component{
         this.setState({state: 'create'});
     }
 
-    handleStatisticsClick(event) {
-        this.setState({state: 'statistic'});
+    handleCompletedClick(event) {
+        this.setState({state: 'completed'});
     }
 
     handleTasksClick(event) {
@@ -43,21 +74,38 @@ class TaskPage extends React.Component{
     }
 
     render(){
-        if(this.state.state === 'main')
-        {
-            return (
-                <div>
-                    <Header create={this.handleCreateClick} statistic={this.handleStatisticsClick} tasks={this.handleTasksClick}/>
-                    <TaskList />
-                </div>
-            );
+        if(this.state.login){
+            if(this.state.state === 'main'){
+                return (
+                    <div>
+                        <Header state={this.state.state} create={this.handleCreateClick} completed={this.handleCompletedClick} tasks={this.handleTasksClick}/>
+                        <TaskList state={this.state.state}/>
+                    </div>
+                );
+            }
+            else if(this.state.state === 'create')
+            {
+                return(
+                    <div>
+                        <Header state={this.state.state} create={this.handleCreateClick} completed={this.handleCompletedClick} tasks={this.handleTasksClick}/>
+                        <TaskInput />
+                    </div>
+                )
+            }
+            else if(this.state.state === 'completed')
+            {
+                return(
+                    <div>
+                        <Header state={this.state.state} create={this.handleCreateClick} completed={this.handleCompletedClick} tasks={this.handleTasksClick}/>
+                        <CompletedTaskList state={this.state.state}/>
+                    </div>
+                )
+            }
         }
-        else if(this.state.state === 'create')
-        {
+        else{
             return(
                 <div>
-                    <Header create={this.handleCreateClick} statistic={this.handleStatisticsClick} tasks={this.handleTasksClick}/>
-                    <TaskInput />
+                    <Header state={this.state.state} create={this.handleCreateClick} completed={this.handleCompletedClick} tasks={this.handleTasksClick}/>
                 </div>
             )
         }

@@ -1,3 +1,4 @@
+from importlib import invalidate_caches
 from .serializers import TaskSerializer
 from .models import Task
 from rest_framework.response import Response
@@ -8,12 +9,20 @@ from rest_framework.parsers import JSONParser
 # Create your views here.
 @api_view(['GET'])
 def task_list_view(request):
-    qs = Task.objects.all()
+    qs = Task.objects.filter(completed=False)
+    serializer = TaskSerializer(qs, many=True)
+    return Response(serializer.data, status=200)
+
+@api_view(['GET'])
+def task_completed_list_view(request):
+    qs = Task.objects.filter(completed=True)
     serializer = TaskSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
 @api_view(['POST'])
 def task_create_view(request):
+    if request.data['date']:
+        request.data['date'] = request.data['date'][0:10]
     serializer = TaskSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

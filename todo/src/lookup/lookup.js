@@ -42,6 +42,32 @@ export function TaskListApi() {
     return(res)
 }
 
+export function CompletedTaskListApi() {
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [tasks, setTask] = useState([]);
+
+    useEffect(() => {
+        fetch("http://localhost:8000/api/completed/")
+            .then(res => res.json())
+            .then((data) => {
+                    setIsLoaded(true);
+                    setTask(data);
+                },
+                (error) => {
+                    setIsLoaded(true);
+                    setError(error);
+                  }
+            )
+    }, [])
+    let res = {
+        'tasks': tasks,
+        'error': error,
+        'isLoaded': isLoaded
+            }
+    return(res)
+}
+
 export function TaskCreateApi(data){
     var csrftoken = getCookie('csrftoken')
     var url = 'http://localhost:8000/api/create/'

@@ -36,3 +36,8 @@ h5 .Task {
   color: whitesmoke;
   margin-left: 2%;
 }
+
+.selected-button {
+  color: rgb(213, 68, 213);
+  font-size: x-large;
+}
